@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+- Fixed 'mod enabled' toggle not doing anything
+
 ## 0.3.0
 
 - Added placeholder alias system with config menu

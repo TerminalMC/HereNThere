@@ -61,17 +61,23 @@ public class HereNThere {
     }
 
     public static String onTabKey(String before, String after) {
-        if (Minecraft.getInstance().player != null && Minecraft.getInstance().level != null) {
-            for (Alias alias : ALIASES) {
-                if (aliasMatches(alias.alias, before)) {
-                    PlaceholderResult result = Placeholders.replace(alias.replacement);
-                    return before.substring(0, before.length() - alias.alias.length())
-                            + result.string()
-                            + after;
-                }
+        String defaultVal = before + after;
+        if (!options().modEnabled)
+            return defaultVal;
+        if (Minecraft.getInstance().player == null)
+            return defaultVal;
+        if (Minecraft.getInstance().level == null)
+            return defaultVal;
+
+        for (Alias alias : ALIASES) {
+            if (aliasMatches(alias.alias, before)) {
+                PlaceholderResult result = Placeholders.replace(alias.replacement);
+                return before.substring(0, before.length() - alias.alias.length())
+                        + result.string()
+                        + after;
             }
         }
-        return before + after;
+        return defaultVal;
     }
 
     private static boolean aliasMatches(String alias, String before) {
