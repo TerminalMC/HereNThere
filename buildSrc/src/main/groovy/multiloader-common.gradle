@@ -180,7 +180,7 @@ processResources {
             throw ex
         }
         if (dep == "modmenu") {
-            expandProps["fabric_modmenu_entrypoint"] = "dev.terminalmc.framework.compat.modmenu.ModMenuImpl"
+            expandProps["fabric_modmenu_entrypoint"] = "dev.terminalmc.herenthere.compat.modmenu.ModMenuImpl"
         }
     }
     safePropList("neoforge_deps").each { dep ->

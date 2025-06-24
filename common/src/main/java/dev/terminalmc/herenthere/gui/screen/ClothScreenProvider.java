@@ -1,0 +1,128 @@
+/*
+ * Copyright 2025 TerminalMC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package dev.terminalmc.herenthere.gui.screen;
+
+import dev.terminalmc.herenthere.HereNThere;
+import dev.terminalmc.herenthere.config.Alias;
+import dev.terminalmc.herenthere.config.Config;
+import dev.terminalmc.herenthere.config.Config.Options;
+import me.shedaniel.clothconfig2.api.ConfigBuilder;
+import me.shedaniel.clothconfig2.api.ConfigCategory;
+import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import net.minecraft.client.gui.screens.Screen;
+
+import java.text.ParseException;
+import java.util.*;
+
+import static dev.terminalmc.herenthere.util.Localization.localized;
+
+public class ClothScreenProvider {
+
+    /**
+     * Builds and returns a Cloth Config options screen.
+     *
+     * @param parent the current screen.
+     * @return a new options {@link Screen}.
+     * @throws NoClassDefFoundError if the Cloth Config API mod is not available.
+     */
+    static Screen getConfigScreen(Screen parent) {
+        Config.Options options = Config.options();
+
+        ConfigBuilder builder = ConfigBuilder.create()
+                .setParentScreen(parent)
+                .setTitle(localized("name"))
+                .setSavingRunnable(Config::save);
+        ConfigEntryBuilder eb = builder.entryBuilder();
+
+        ConfigCategory general = builder.getOrCreateCategory(localized("option", "general"));
+
+        general.addEntry(eb.startBooleanToggle(
+                        localized("option", "general.modEnabled"),
+                        options.modEnabled
+                )
+                .setDefaultValue(Options.modEnabledDefault)
+                .setSaveConsumer(val -> options.modEnabled = val)
+                .build());
+
+        general.addEntry(eb.startBooleanToggle(
+                        localized("option", "general.requireDelimiter"),
+                        options.requireDelimiter
+                )
+                .setTooltip(localized("option", "general.requireDelimiter.tooltip"))
+                .setDefaultValue(Options.requireDelimiterDefault)
+                .setSaveConsumer(val -> options.requireDelimiter = val)
+                .build());
+
+        general.addEntry(eb.startStrList(
+                        localized("option", "aliases"),
+                        getLayoutStrings(options.aliases)
+                )
+                .setTooltip(localized("option", "aliases.tooltip.1")
+                        .append("\n")
+                        .append(localized("option", "aliases.tooltip.2"))
+                        .append("\n")
+                        .append(localized("option", "aliases.tooltip.3")))
+                .setExpanded(true)
+                .setInsertInFront(true)
+                .setErrorSupplier((list) -> {
+                    int i = 0;
+                    for (String string : list) {
+                        try {
+                            Alias.fromDataString(string);
+                        } catch (ParseException ex) {
+                            return Optional.of(localized(
+                                    "error",
+                                    "alias.parse",
+                                    i + 1,
+                                    ex.getMessage()
+                            ));
+                        }
+                        i++;
+                    }
+                    return Optional.empty();
+                })
+                .setDefaultValue(getLayoutStrings(Options.aliasesDefault.get()))
+                .setSaveConsumer((list) -> {
+                    Set<Alias> aliases = new HashSet<>();
+                    for (String string : list) {
+                        try {
+                            Alias alias = Alias.fromDataString(string);
+                            aliases.add(alias);
+                        } catch (ParseException ex) {
+                            HereNThere.LOG.error(
+                                    "Encountered an alias parsing error not "
+                                            + "caught by error checker: {}", ex.getMessage()
+                            );
+                            break;
+                        }
+                    }
+                    options.aliases.clear();
+                    options.aliases.addAll(aliases);
+                })
+                .build());
+
+        return builder.build();
+    }
+
+    private static List<String> getLayoutStrings(Collection<Alias> aliases) {
+        List<String> strings = new ArrayList<>();
+        for (Alias alias : aliases) {
+            strings.add(alias.toDataString());
+        }
+        return strings;
+    }
+}

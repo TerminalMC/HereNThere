@@ -1,0 +1,20 @@
+{
+  "herenthere.name": "HereNThere",
+
+  "message.herenthere.viewModrinth": "View on Modrinth",
+  "message.herenthere.installCloth": "Install Cloth Config API to access mod options",
+
+  "option.herenthere.general": "General",
+
+  "option.herenthere.general.modEnabled": "Mod Enabled",
+
+  "option.herenthere.general.requireDelimiter": "Require Delimiter",
+  "option.herenthere.general.requireDelimiter.tooltip": "Whether to require a non-word-character [^a-zA-Z0-9_] before an alias to allow tab replacement.",
+
+  "option.herenthere.aliases": "Aliases",
+  "option.herenthere.aliases.tooltip.1": "Aliases use the following format:",
+  "option.herenthere.aliases.tooltip.2": "<alias> ||| <replacement containing placeholder pattern>",
+
+  "error.herenthere.alias.parse": "Invalid alias at entry %d: %s",
+  "error.herenthere.alias.pattern": "Data does not match required pattern: %s"
+}

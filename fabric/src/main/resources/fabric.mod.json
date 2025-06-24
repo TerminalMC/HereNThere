@@ -25,11 +25,11 @@
   "entrypoints": {
     "main": [],
     "client": [
-      "dev.terminalmc.framework.FrameworkFabric"
+      "dev.terminalmc.herenthere.HereNThereFabric"
     ],
     "server": [],
     "modmenu": [
-      ${fabric_modmenu_entrypoint}
+      "${fabric_modmenu_entrypoint}"
     ]
   },
 

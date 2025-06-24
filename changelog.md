@@ -1,15 +1,13 @@
 # Changelog
 
-## 2.0.0
+## 0.3.0
 
-- Redesigned buildscripts
+- Added placeholder alias system with config menu
 
-## 1.1.0
+## 0.2.0
 
-- Fixed X
-- Added Y
-- Removed Z
+- Added compatibility with Advanced Chat
 
-## 1.0.0
+## 0.1.0
 
 - Initial release
