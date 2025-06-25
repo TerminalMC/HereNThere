@@ -18,6 +18,7 @@ package dev.terminalmc.herenthere.mixin;
 
 import dev.terminalmc.herenthere.HereNThere;
 import io.github.darkkronicle.advancedchatcore.chat.AdvancedTextField;
+import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -55,7 +56,10 @@ public class AdvancedChatScreenMixin {
                 before = val.substring(0, cursor);
                 after = val.substring(cursor);
             }
-            chatField.setValue(HereNThere.onTabKey(before, after));
+            @Nullable String newVal = HereNThere.onTabKey(before, after);
+            if (newVal != null) {
+                chatField.setValue(newVal);
+            }
         }
     }
 }

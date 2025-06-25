@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0
+
+- Fixed no-op breaking tab completion under certain conditions
+
 ## 0.5.0
 
 - Fixed a crash when applying multiple placeholders in sequence

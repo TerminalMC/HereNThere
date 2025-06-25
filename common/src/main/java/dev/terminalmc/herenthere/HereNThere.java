@@ -25,6 +25,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -60,14 +61,13 @@ public class HereNThere {
         ALIASES.sort(Comparator.comparingInt(a -> -a.alias.length()));
     }
 
-    public static String onTabKey(String before, String after) {
-        String defaultVal = before + after;
+    public static @Nullable String onTabKey(String before, String after) {
         if (!options().modEnabled)
-            return defaultVal;
+            return null;
         if (Minecraft.getInstance().player == null)
-            return defaultVal;
+            return null;
         if (Minecraft.getInstance().level == null)
-            return defaultVal;
+            return null;
 
         for (Alias alias : ALIASES) {
             if (aliasMatches(alias.alias, before)) {
@@ -77,7 +77,7 @@ public class HereNThere {
                         + after;
             }
         }
-        return defaultVal;
+        return null;
     }
 
     private static boolean aliasMatches(String alias, String before) {
