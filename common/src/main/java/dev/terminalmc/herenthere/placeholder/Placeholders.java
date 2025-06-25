@@ -103,9 +103,9 @@ public class Placeholders {
     public record Placeholder(Pattern pattern, Function<String[], String> operator) {
 
         public String apply(String message) {
-            Matcher matcher = pattern.matcher(message);
             while (true) {
                 // Check for the next match
+                Matcher matcher = pattern.matcher(message);
                 if (!matcher.find())
                     return message;
                 // Collect groups

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+- Fixed a crash when applying multiple placeholders in sequence
+
 ## 0.4.0
 
 - Fixed delimiter check
