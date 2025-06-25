@@ -84,7 +84,7 @@ public class HereNThere {
         if (options().requireDelimiter) {
             return Pattern.compile("(?<!\\w)" + Pattern.quote(alias) + "$")
                     .matcher(before)
-                    .matches();
+                    .find();
         } else {
             return before.endsWith(alias);
         }
