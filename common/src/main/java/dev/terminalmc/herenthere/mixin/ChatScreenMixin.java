@@ -19,6 +19,7 @@ package dev.terminalmc.herenthere.mixin;
 import dev.terminalmc.herenthere.HereNThere;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.input.KeyEvent;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,12 +39,10 @@ public class ChatScreenMixin {
             at = @At("HEAD")
     )
     private void onKeyPressed(
-            int keyCode,
-            int scanCode,
-            int modifiers,
+            KeyEvent event,
             CallbackInfoReturnable<Boolean> cir
     ) {
-        if (keyCode == GLFW.GLFW_KEY_TAB) {
+        if (event.key() == GLFW.GLFW_KEY_TAB) {
             String val = input.getValue();
             String before = input.getValue();
             String after = "";

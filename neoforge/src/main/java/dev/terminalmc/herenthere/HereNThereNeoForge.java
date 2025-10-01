@@ -33,7 +33,6 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 )
 @EventBusSubscriber(
         modid = HereNThere.MOD_ID,
-        bus = EventBusSubscriber.Bus.MOD,
         value = Dist.CLIENT
 )
 public class HereNThereNeoForge {

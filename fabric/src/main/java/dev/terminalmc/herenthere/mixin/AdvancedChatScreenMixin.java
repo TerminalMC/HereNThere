@@ -18,6 +18,7 @@ package dev.terminalmc.herenthere.mixin;
 
 import dev.terminalmc.herenthere.HereNThere;
 import io.github.darkkronicle.advancedchatcore.chat.AdvancedTextField;
+import net.minecraft.client.input.KeyEvent;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
@@ -42,12 +43,10 @@ public class AdvancedChatScreenMixin {
             at = @At("HEAD")
     )
     private void onKeyPressed(
-            int keyCode,
-            int scanCode,
-            int modifiers,
+            KeyEvent event,
             CallbackInfoReturnable<Boolean> cir
     ) {
-        if (keyCode == GLFW.GLFW_KEY_TAB) {
+        if (event.key() == GLFW.GLFW_KEY_TAB) {
             String val = chatField.getValue();
             String before = chatField.getValue();
             String after = "";
