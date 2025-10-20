@@ -149,7 +149,10 @@ processResources {
             // Fabric
             "fabric_loader_versions_list": asJsonList(fabric_loader_versions),
             "fabric_api_versions_list": asJsonList(fabric_api_versions),
-            "fabric_modmenu_entrypoint": "",
+            "fabric_entrypoints_main"   : asJsonListPrefixed(fabric_entrypoints_main, "${mod_group}.${mod_id}."),
+            "fabric_entrypoints_client" : asJsonListPrefixed(fabric_entrypoints_client, "${mod_group}.${mod_id}."),
+            "fabric_entrypoints_server" : asJsonListPrefixed(fabric_entrypoints_server, "${mod_group}.${mod_id}."),
+            "fabric_entrypoints_modmenu": asJsonListPrefixed(fabric_entrypoints_modmenu, "${mod_group}.${mod_id}."),
             // NeoForge
             "neoforge_versions"      : neoforge_versions,
             // Dependencies:
@@ -179,9 +182,9 @@ processResources {
                     + "Check dependency property format.")
             throw ex
         }
-        if (dep == "modmenu") {
-            expandProps["fabric_modmenu_entrypoint"] = "dev.terminalmc.herenthere.compat.modmenu.ModMenuImpl"
-        }
+    }
+    if (!expandProps["fabric_depends"].isBlank()) {
+        expandProps["fabric_depends"] = "${expandProps["fabric_depends"]},".toString()
     }
     safePropList("neoforge_deps").each { dep ->
         try {
@@ -223,14 +226,31 @@ publishing {
  * Converts a CSV list into an FMJ-usable format.
  */
 static asJsonList(String csvString) {
-    return csvString.split(",").collect { "\"$it\"" }.join(",")
+    return csvString.split(",")
+            .findAll { !it.isBlank() }
+            .collect { "\"${it.strip()}\"" }
+            .join(",")
+}
+
+/**
+ * Converts a CSV list into an FMJ-usable list format, prefixing each element with the source
+ * package (${mod_group}.${mod_id}).
+ */
+static asJsonListPrefixed(String csvString, String prefix) {
+    return csvString.split(",")
+            .findAll { !it.isBlank() }
+            .collect { "\"${prefix}${it.strip()}\"" }
+            .join(",")
 }
 
 /**
  * Converts a CSV list into an NMT-usable format.
  */
 static asTomlList(String csvString) {
-    return csvString.split(",").join(", ")
+    return csvString.split(",")
+            .findAll { !it.isBlank() }
+            .collect { it.strip() }
+            .join(", ")
 }
 
 /**
