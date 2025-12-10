@@ -16,7 +16,6 @@
 
 package dev.terminalmc.herenthere.placeholder.util;
 
-import dev.terminalmc.herenthere.HereNThere;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.debug.DebugRenderer;
 import net.minecraft.world.entity.Entity;
@@ -56,8 +55,6 @@ public class TargetedEntityUtil {
 
         if (uuid == null)
             return fault();
-
-        HereNThere.LOG.warn("ok2");
 
         return uuid.toString();
     }

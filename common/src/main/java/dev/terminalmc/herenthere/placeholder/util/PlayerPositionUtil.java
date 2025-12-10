@@ -129,15 +129,15 @@ public class PlayerPositionUtil {
 
     private static Vec3 applyCaret(Vec3 pos, double left, double up, double forwards) {
         Vec2 rot = getRotation();
-        float f = Mth.cos((rot.y + 90.0F) * (float) (Math.PI / 180.0));
-        float g = Mth.sin((rot.y + 90.0F) * (float) (Math.PI / 180.0));
-        float h = Mth.cos(-rot.x * (float) (Math.PI / 180.0));
-        float i = Mth.sin(-rot.x * (float) (Math.PI / 180.0));
-        float j = Mth.cos((-rot.x + 90.0F) * (float) (Math.PI / 180.0));
-        float k = Mth.sin((-rot.x + 90.0F) * (float) (Math.PI / 180.0));
+        float f = Mth.cos((rot.y + 90.0D) * (Math.PI / 180.0D));
+        float g = Mth.sin((rot.y + 90.0D) * (Math.PI / 180.0D));
+        float h = Mth.cos(-rot.x * (Math.PI / 180.0D));
+        float i = Mth.sin(-rot.x * (Math.PI / 180.0D));
+        float j = Mth.cos((-rot.x + 90.0D) * (Math.PI / 180.0D));
+        float k = Mth.sin((-rot.x + 90.0D) * (Math.PI / 180.0D));
         Vec3 vec32 = new Vec3(f * h, i, g * h);
         Vec3 vec33 = new Vec3(f * j, k, g * j);
-        Vec3 vec34 = vec32.cross(vec33).scale(-1.0);
+        Vec3 vec34 = vec32.cross(vec33).scale(-1.0D);
         double d = vec32.x * forwards + vec33.x * up + vec34.x * left;
         double e = vec32.y * forwards + vec33.y * up + vec34.y * left;
         double l = vec32.z * forwards + vec33.z * up + vec34.z * left;

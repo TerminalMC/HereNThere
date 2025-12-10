@@ -25,10 +25,10 @@ public class PlayerDimensionUtil {
     }
 
     public static String getDimension(String[] groups) {
-        return Minecraft.getInstance().level.dimension().location().toString();
+        return Minecraft.getInstance().level.dimension().identifier().toString();
     }
 
     public static String getDimensionPath(String[] groups) {
-        return Minecraft.getInstance().level.dimension().location().getPath();
+        return Minecraft.getInstance().level.dimension().identifier().getPath();
     }
 }
