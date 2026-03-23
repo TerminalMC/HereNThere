@@ -3,6 +3,7 @@
 
   "message.herenthere.viewModrinth": "View on Modrinth",
   "message.herenthere.installCloth": "Install Cloth Config API to access mod options",
+  "message.herenthere.configScreenDisabled": "Config screen is not available on this version.",
 
   "option.herenthere.general": "General",
 

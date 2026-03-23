@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 TerminalMC
+ * Copyright 2026 TerminalMC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@ package dev.terminalmc.herenthere;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 
 public class HereNThereFabric implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
         // Register keybinds
-        HereNThere.KEYBINDS.forEach(KeyBindingHelper::registerKeyBinding);
+        HereNThere.KEYBINDS.forEach(KeyMappingHelper::registerKeyMapping);
 
         // Register client after-tick event
         ClientTickEvents.END_CLIENT_TICK.register(HereNThere::afterClientTick);
