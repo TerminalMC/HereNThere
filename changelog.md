@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.1
 
-- Updated to mc26.1-rc.2
+- Updated to mc26.1
 - Temporarily disabled config screen
 - Mod versioning scheme is now `major.mc.minor`:
   - `major` is incremented on 'significant' feature changes, or breaking API changes (if
