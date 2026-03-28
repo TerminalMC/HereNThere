@@ -73,9 +73,7 @@ public class ClothScreenProvider {
                 )
                 .setTooltip(localized("option", "aliases.tooltip.1")
                         .append("\n")
-                        .append(localized("option", "aliases.tooltip.2"))
-                        .append("\n")
-                        .append(localized("option", "aliases.tooltip.3")))
+                        .append(localized("option", "aliases.tooltip.2")))
                 .setExpanded(true)
                 .setInsertInFront(true)
                 .setErrorSupplier((list) -> {
