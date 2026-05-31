@@ -16,7 +16,9 @@
 
 package dev.terminalmc.herenthere;
 
+import dev.terminalmc.herenthere.command.Commands;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 
@@ -27,6 +29,9 @@ public class HereNThereFabric implements ClientModInitializer {
     public void onInitializeClient() {
         // Register keybinds
         HereNThere.KEYBINDS.forEach(KeyMappingHelper::registerKeyMapping);
+
+        // Register client commands
+        ClientCommandRegistrationCallback.EVENT.register(Commands::register);
 
         // Register client after-tick event
         ClientTickEvents.END_CLIENT_TICK.register(HereNThere::afterClientTick);
