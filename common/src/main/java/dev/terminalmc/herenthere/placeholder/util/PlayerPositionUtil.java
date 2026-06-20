@@ -63,7 +63,7 @@ public class PlayerPositionUtil {
             Minecraft mc = Minecraft.getInstance();
             // Distance is arbitrary but will do for now
             HitResult result = mc.player.pick(
-                    Math.max(384, (mc.levelRenderer.getLastViewDistance() + 1D) * 16),
+                    Math.max(384, (mc.levelRenderer.viewArea().getViewDistance() + 1D) * 16),
                     0.0F,
                     false
             );
@@ -102,13 +102,13 @@ public class PlayerPositionUtil {
         Vec3 pos;
         if (look) {
             BlockPos lookPos = getLookBlockPos();
-            pos = lookPos == null ? null : lookPos.getBottomCenter();
+            pos = lookPos == null ? null : Vec3.atBottomCenterOf(lookPos);
             if (pos == null)
                 return fault();
         } else if (decimal) {
             pos = getPlayerPos();
         } else {
-            pos = getPlayerBlockPos().getBottomCenter();
+            pos = Vec3.atBottomCenterOf(getPlayerBlockPos());
         }
 
         pos = applyCaret(pos, leftCaret, upCaret, forwardsCaret);
@@ -157,13 +157,13 @@ public class PlayerPositionUtil {
         Vec3 pos;
         if (look) {
             BlockPos lookPos = getLookBlockPos();
-            pos = lookPos == null ? null : lookPos.getBottomCenter();
+            pos = lookPos == null ? null : Vec3.atBottomCenterOf(lookPos);
             if (pos == null)
                 return fault();
         } else if (decimal) {
             pos = getPlayerPos();
         } else {
-            pos = getPlayerBlockPos().getBottomCenter();
+            pos = Vec3.atBottomCenterOf(getPlayerBlockPos());
         }
 
         double value = switch (component) {

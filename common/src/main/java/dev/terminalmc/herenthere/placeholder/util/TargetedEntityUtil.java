@@ -40,7 +40,7 @@ public class TargetedEntityUtil {
             // Distance is arbitrary but will do for now
             Optional<Entity> target = DebugRenderer.getTargetedEntity(
                     mc.player,
-                    (int) Math.max(384, (mc.levelRenderer.getLastViewDistance() + 1D) * 16)
+                    (int) Math.max(384, (mc.levelRenderer.viewArea().getViewDistance() + 1D) * 16)
             );
             target.ifPresent(entity -> lookEntityId = entity.getUUID());
         }
