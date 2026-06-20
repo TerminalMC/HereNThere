@@ -32,6 +32,10 @@ import static dev.terminalmc.herenthere.util.Localization.localized;
 
 public class ClothScreenProvider {
 
+    private ClothScreenProvider() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
+
     /**
      * Builds and returns a Cloth Config options screen.
      *

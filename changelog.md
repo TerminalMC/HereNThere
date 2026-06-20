@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.102.1
+
+- Reset `mc` version counter to 1 at mc1.0.0
+- Removed duplicate logger names
+
 ## 1.2.0
 
 - Updated to mc26.1.2
@@ -21,27 +26,3 @@
     update was required.
   - `minor` is reset when `major` is changed, and is incremented on every update that does not
     change either of the previous two numbers.
-
-## 0.6.0
-
-- Fixed no-op breaking tab completion under certain conditions
-
-## 0.5.0
-
-- Fixed a crash when applying multiple placeholders in sequence
-
-## 0.4.0
-
-- Fixed delimiter check
-
-## 0.3.0
-
-- Added placeholder alias system with config menu
-
-## 0.2.0
-
-- Added compatibility with Advanced Chat
-
-## 0.1.0
-
-- Initial release

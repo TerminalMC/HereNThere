@@ -20,11 +20,12 @@ import dev.terminalmc.herenthere.config.Alias;
 import dev.terminalmc.herenthere.config.Config;
 import dev.terminalmc.herenthere.placeholder.Placeholders;
 import dev.terminalmc.herenthere.placeholder.Placeholders.PlaceholderResult;
-import dev.terminalmc.herenthere.util.ModLogger;
+import dev.terminalmc.herenthere.util.Logging;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class HereNThere {
 
     public static final String MOD_ID = "herenthere";
     public static final String MOD_NAME = "HereNThere";
-    public static final ModLogger LOG = new ModLogger(MOD_NAME);
+    public static final Logger LOG = Logging.getLogger(MOD_ID);
     public static final Component PREFIX = Component.empty()
             .append(Component.literal("[").withStyle(ChatFormatting.DARK_GRAY))
             .append(Component.literal(MOD_NAME).withStyle(ChatFormatting.GOLD))
@@ -46,6 +47,10 @@ public class HereNThere {
             .withStyle(ChatFormatting.GRAY);
     public static final List<KeyMapping> KEYBINDS = List.of();
     public static final List<Alias> ALIASES = new ArrayList<>();
+
+    private HereNThere() {
+        throw new UnsupportedOperationException("This class cannot be instantiated.");
+    }
 
     public static void init() {
         Config.getAndSave();

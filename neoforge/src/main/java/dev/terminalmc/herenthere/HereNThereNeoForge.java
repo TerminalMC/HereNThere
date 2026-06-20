@@ -65,19 +65,19 @@ public class HereNThereNeoForge {
     static class ClientEventHandler {
 
         /**
+         * Registers all client commands.
+         */
+        @SubscribeEvent
+        public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
+            Commands.register(event.getDispatcher(), event.getBuildContext());
+        }
+
+        /**
          * Registers client after-tick event.
          */
         @SubscribeEvent
         public static void registerAfterClientTick(ClientTickEvent.Post event) {
             HereNThere.afterClientTick(Minecraft.getInstance());
-        }
-
-        /**
-         * Registers client commands.
-         */
-        @SubscribeEvent
-        public static void onRegisterClientCommands(RegisterClientCommandsEvent event) {
-            Commands.register(event.getDispatcher(), event.getBuildContext());
         }
     }
 }
