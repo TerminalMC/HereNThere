@@ -28,30 +28,47 @@ import static dev.terminalmc.herenthere.placeholder.Placeholders.fault;
 
 public class TargetedEntityUtil {
 
-    private static @Nullable UUID lookEntityId;
+    private static @Nullable UUID playerLookEntityId;
+    private static @Nullable UUID cameraLookEntityId;
 
     public static void reset() {
-        lookEntityId = null;
+        playerLookEntityId = null;
+        cameraLookEntityId = null;
     }
 
-    private static @Nullable UUID getLookEntityId() {
-        if (lookEntityId == null) {
+    private static @Nullable UUID getPlayerLookEntityId() {
+        if (playerLookEntityId == null) {
             Minecraft mc = Minecraft.getInstance();
             // Distance is arbitrary but will do for now
             Optional<Entity> target = DebugRenderer.getTargetedEntity(
                     mc.player,
                     (int) Math.max(384, (mc.levelRenderer.getLastViewDistance() + 1D) * 16)
             );
-            target.ifPresent(entity -> lookEntityId = entity.getUUID());
+            target.ifPresent(entity -> playerLookEntityId = entity.getUUID());
         }
-        return lookEntityId;
+        return playerLookEntityId;
+    }
+
+    private static @Nullable UUID getCameraLookEntityId() {
+        if (cameraLookEntityId == null) {
+            Minecraft mc = Minecraft.getInstance();
+            // Distance is arbitrary but will do for now
+            Optional<Entity> target = DebugRenderer.getTargetedEntity(
+                    mc.getCameraEntity(),
+                    (int) Math.max(384, (mc.levelRenderer.getLastViewDistance() + 1D) * 16)
+            );
+            target.ifPresent(entity -> cameraLookEntityId = entity.getUUID());
+        }
+        return cameraLookEntityId;
     }
 
     public static String getTargetEntityId(String[] groups) {
-        if (groups.length != 0)
+        if (groups.length != 1)
             return fault();
 
-        UUID uuid = getLookEntityId();
+        boolean camera = groups[0].equals("c");
+
+        UUID uuid = camera ? getCameraLookEntityId() : getPlayerLookEntityId();
 
         if (uuid == null)
             return fault();

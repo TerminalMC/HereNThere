@@ -31,17 +31,27 @@ import static dev.terminalmc.herenthere.placeholder.Placeholders.fault;
 public class PlayerPositionUtil {
 
     private static @Nullable Vec3 playerPos;
+    private static @Nullable Vec3 cameraPos;
     private static @Nullable BlockPos playerBlockPos;
-    private static @Nullable BlockPos lookBlockPos;
-    private static @Nullable Vec3 lookAngle;
-    private static @Nullable Vec2 rotation;
+    private static @Nullable BlockPos cameraBlockPos;
+    private static @Nullable BlockPos playerLookBlockPos;
+    private static @Nullable BlockPos cameraLookBlockPos;
+    private static @Nullable Vec3 playerLookAngle;
+    private static @Nullable Vec3 cameraLookAngle;
+    private static @Nullable Vec2 playerRotation;
+    private static @Nullable Vec2 cameraRotation;
 
     public static void reset() {
         playerPos = null;
+        cameraPos = null;
         playerBlockPos = null;
-        lookBlockPos = null;
-        lookAngle = null;
-        rotation = null;
+        cameraBlockPos = null;
+        playerLookBlockPos = null;
+        cameraLookBlockPos = null;
+        playerLookAngle = null;
+        cameraLookAngle = null;
+        playerRotation = null;
+        cameraRotation = null;
     }
 
     private static @NotNull Vec3 getPlayerPos() {
@@ -51,6 +61,13 @@ public class PlayerPositionUtil {
         return playerPos;
     }
 
+    private static @NotNull Vec3 getCameraPos() {
+        if (cameraPos == null) {
+            cameraPos = Minecraft.getInstance().getCameraEntity().position();
+        }
+        return cameraPos;
+    }
+
     private static @NotNull BlockPos getPlayerBlockPos() {
         if (playerBlockPos == null) {
             playerBlockPos = Minecraft.getInstance().player.blockPosition();
@@ -58,8 +75,15 @@ public class PlayerPositionUtil {
         return playerBlockPos;
     }
 
-    private static @Nullable BlockPos getLookBlockPos() {
-        if (lookBlockPos == null) {
+    private static @NotNull BlockPos getCameraBlockPos() {
+        if (cameraBlockPos == null) {
+            cameraBlockPos = Minecraft.getInstance().getCameraEntity().blockPosition();
+        }
+        return cameraBlockPos;
+    }
+
+    private static @Nullable BlockPos getPlayerLookBlockPos() {
+        if (playerLookBlockPos == null) {
             Minecraft mc = Minecraft.getInstance();
             // Distance is arbitrary but will do for now
             HitResult result = mc.player.pick(
@@ -68,50 +92,81 @@ public class PlayerPositionUtil {
                     false
             );
             if (result.getType().equals(HitResult.Type.BLOCK)) {
-                lookBlockPos = ((BlockHitResult) result).getBlockPos();
+                playerLookBlockPos = ((BlockHitResult) result).getBlockPos();
             }
         }
-        return lookBlockPos;
+        return playerLookBlockPos;
     }
 
-    private static @NotNull Vec3 getLookAngle() {
-        if (lookAngle == null) {
-            lookAngle = Minecraft.getInstance().player.getLookAngle();
+    private static @Nullable BlockPos getCameraLookBlockPos() {
+        if (cameraLookBlockPos == null) {
+            Minecraft mc = Minecraft.getInstance();
+            // Distance is arbitrary but will do for now
+            HitResult result = mc.getCameraEntity().pick(
+                    Math.max(384, (mc.levelRenderer.getLastViewDistance() + 1D) * 16),
+                    0.0F,
+                    false
+            );
+            if (result.getType().equals(HitResult.Type.BLOCK)) {
+                cameraLookBlockPos = ((BlockHitResult) result).getBlockPos();
+            }
         }
-        return lookAngle;
+        return cameraLookBlockPos;
     }
 
-    private static @NotNull Vec2 getRotation() {
-        if (rotation == null) {
-            rotation = Minecraft.getInstance().player.getRotationVector();
+    private static @NotNull Vec3 getPlayerLookAngle() {
+        if (playerLookAngle == null) {
+            playerLookAngle = Minecraft.getInstance().player.getLookAngle();
         }
-        return rotation;
+        return playerLookAngle;
+    }
+
+    private static @NotNull Vec3 getCameraLookAngle() {
+        if (cameraLookAngle == null) {
+            cameraLookAngle = Minecraft.getInstance().getCameraEntity().getLookAngle();
+        }
+        return cameraLookAngle;
+    }
+
+    private static @NotNull Vec2 getPlayerRotation() {
+        if (playerRotation == null) {
+            playerRotation = Minecraft.getInstance().player.getRotationVector();
+        }
+        return playerRotation;
+    }
+
+    private static @NotNull Vec2 getCameraRotation() {
+        if (cameraRotation == null) {
+            cameraRotation = Minecraft.getInstance().getCameraEntity().getRotationVector();
+        }
+        return cameraRotation;
     }
 
     public static String getPosString(String[] groups) {
-        if (groups.length != 6)
+        if (groups.length != 7)
             return fault();
 
-        boolean look = groups[0].equals("l");
-        boolean decimal = groups[1].equals("d");
-        String delimiter = groups[2];
-        double leftCaret = groups[3] == null ? 0D : Double.parseDouble(groups[3]);
-        double upCaret = groups[4] == null ? 0D : Double.parseDouble(groups[4]);
-        double forwardsCaret = groups[5] == null ? 0D : Double.parseDouble(groups[5]);
+        boolean camera = groups[0].equals("c");
+        boolean look = groups[1].equals("l");
+        boolean decimal = groups[2].equals("d");
+        String delimiter = groups[3];
+        double leftCaret = groups[4] == null ? 0D : Double.parseDouble(groups[4]);
+        double upCaret = groups[5] == null ? 0D : Double.parseDouble(groups[5]);
+        double forwardsCaret = groups[6] == null ? 0D : Double.parseDouble(groups[6]);
 
         Vec3 pos;
         if (look) {
-            BlockPos lookPos = getLookBlockPos();
+            BlockPos lookPos = camera ? getCameraLookBlockPos() : getPlayerLookBlockPos();
             pos = lookPos == null ? null : lookPos.getBottomCenter();
             if (pos == null)
                 return fault();
         } else if (decimal) {
-            pos = getPlayerPos();
+            pos = camera ? getCameraPos() : getPlayerPos();
         } else {
-            pos = getPlayerBlockPos().getBottomCenter();
+            pos = (camera ? getCameraBlockPos() : getPlayerBlockPos()).getBottomCenter();
         }
 
-        pos = applyCaret(pos, leftCaret, upCaret, forwardsCaret);
+        pos = applyCaret(camera, pos, leftCaret, upCaret, forwardsCaret);
 
         if (decimal) {
             return String.format("%f%s%f%s%f", pos.x, delimiter, pos.y, delimiter, pos.z);
@@ -127,8 +182,14 @@ public class PlayerPositionUtil {
         }
     }
 
-    private static Vec3 applyCaret(Vec3 pos, double left, double up, double forwards) {
-        Vec2 rot = getRotation();
+    private static Vec3 applyCaret(
+            boolean camera,
+            Vec3 pos,
+            double left,
+            double up,
+            double forwards
+    ) {
+        Vec2 rot = camera ? getCameraRotation() : getPlayerRotation();
         float f = Mth.cos((rot.y + 90.0D) * (Math.PI / 180.0D));
         float g = Mth.sin((rot.y + 90.0D) * (Math.PI / 180.0D));
         float h = Mth.cos(-rot.x * (Math.PI / 180.0D));
@@ -145,25 +206,26 @@ public class PlayerPositionUtil {
     }
 
     public static String getPosComponentString(String[] groups) {
-        if (groups.length != 5)
+        if (groups.length != 6)
             return fault();
 
-        boolean look = groups[0].equals("l");
-        String component = groups[1];
-        boolean decimal = groups[2].equals("d");
-        @Nullable String operator = groups[3];
-        double operand = groups[4] == null ? 0D : Double.parseDouble(groups[4]);
+        boolean camera = groups[0].equals("c");
+        boolean look = groups[1].equals("l");
+        String component = groups[2];
+        boolean decimal = groups[3].equals("d");
+        @Nullable String operator = groups[4];
+        double operand = groups[5] == null ? 0D : Double.parseDouble(groups[5]);
 
         Vec3 pos;
         if (look) {
-            BlockPos lookPos = getLookBlockPos();
+            BlockPos lookPos = camera ? getCameraLookBlockPos() : getPlayerLookBlockPos();
             pos = lookPos == null ? null : lookPos.getBottomCenter();
             if (pos == null)
                 return fault();
         } else if (decimal) {
-            pos = getPlayerPos();
+            pos = camera ? getCameraPos() : getPlayerPos();
         } else {
-            pos = getPlayerBlockPos().getBottomCenter();
+            pos = (camera ? getCameraBlockPos() : getPlayerBlockPos()).getBottomCenter();
         }
 
         double value = switch (component) {
@@ -191,14 +253,15 @@ public class PlayerPositionUtil {
     }
 
     public static String getFacingAngleString(String[] groups) {
-        if (groups.length != 3)
+        if (groups.length != 4)
             return fault();
 
-        String delimiter = groups[0];
-        @Nullable String operator = groups[1];
-        double operand = groups[2] == null ? 0D : Double.parseDouble(groups[2]);
+        boolean camera = groups[0].equals("c");
+        String delimiter = groups[1];
+        @Nullable String operator = groups[2];
+        double operand = groups[3] == null ? 0D : Double.parseDouble(groups[3]);
 
-        Vec3 vec = getLookAngle();
+        Vec3 vec = camera ? getCameraLookAngle() : getPlayerLookAngle();
 
         if (operator != null) {
             vec = switch (operator) {

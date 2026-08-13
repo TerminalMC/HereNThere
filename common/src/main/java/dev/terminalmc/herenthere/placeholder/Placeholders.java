@@ -30,13 +30,13 @@ public class Placeholders {
     private static int faults;
 
     public static final String POS_STRING =
-            "%(l?)pos(d?)(\\W? ?)(?:\\^(-?\\d+(?:\\.\\d+)?)?\\^(-?\\d+(?:\\.\\d+)?)?\\^(-?\\d+(?:\\.\\d+)?)?)?%";
+            "%(c?)(l?)pos(d?)(\\W? ?)(?:\\^(-?\\d+(?:\\.\\d+)?)?\\^(-?\\d+(?:\\.\\d+)?)?\\^(-?\\d+(?:\\.\\d+)?)?)?%";
     public static final String POS_COMPONENT_STRING =
-            "%(l?)([xyz])(d?)(?:([+\\-*/])(-?\\d+(?:\\.\\d+)?))?%";
+            "%(c?)(l?)([xyz])(d?)(?:([+\\-*/])(-?\\d+(?:\\.\\d+)?))?%";
     public static final String FACING_ANGLE_STRING =
-            "%facing(\\W? ?)(?:([+\\-*/])(-?\\d+(?:\\.\\d+)?))?%";
+            "%(c?)facing(\\W? ?)(?:([+\\-*/])(-?\\d+(?:\\.\\d+)?))?%";
     public static final String TARGET_ENTITY_ID_STRING =
-            "%target-id%";
+            "%(c?)target-id%";
     public static final String PLAYER_NAME_STRING =
             "%name%";
     public static final String DIMENSION_STRING =
