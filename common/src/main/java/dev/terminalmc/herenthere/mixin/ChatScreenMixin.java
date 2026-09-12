@@ -16,12 +16,12 @@
 
 package dev.terminalmc.herenthere.mixin;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import dev.terminalmc.herenthere.HereNThere;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.input.KeyEvent;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -42,7 +42,7 @@ public abstract class ChatScreenMixin {
             KeyEvent event,
             CallbackInfoReturnable<Boolean> cir
     ) {
-        if (event.key() == GLFW.GLFW_KEY_TAB) {
+        if (event.key() == InputConstants.KEY_TAB) {
             String val = input.getValue();
             String before = input.getValue();
             String after = "";
